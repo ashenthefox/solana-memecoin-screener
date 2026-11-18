@@ -1,0 +1,13 @@
+{
+  "name": "solana-memecoin-screener",
+  "version": "1.0.0",
+  "description": "Solana memecoin screener for the terminal: trending, new and boosted tokens filtered by liquidity, market cap, volume, age and buyers.",
+  "type": "module",
+  "bin": { "screener": "bin/screener.js" },
+  "scripts": { "start": "node bin/screener.js", "test": "node --test" },
+  "engines": { "node": ">=22" },
+  "keywords": ["solana", "memecoin", "screener", "token-screener", "dexscreener", "geckoterminal", "pump-fun", "trending-tokens", "new-pairs", "crypto-screener"],
+  "homepage": "https://blixvip.com/solana-memecoin-screener",
+  "repository": { "type": "git", "url": "git+https://github.com/blixtrade/solana-memecoin-screener.git" },
+  "license": "MIT"
+}
