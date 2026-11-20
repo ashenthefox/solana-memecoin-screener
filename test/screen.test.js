@@ -55,3 +55,10 @@ test("GeckoTerminal and DexScreener shapes normalise to the same row", () => {
   assert.deepEqual(Object.keys(d), Object.keys(g));
   assert.equal(d.mcap, 5);
 });
+
+test("--dex keeps a token whose deepest pool is on another DEX, using its pool on that DEX", () => {
+  const rows = [row({ mint: "A", dex: "meteora", pool: "deep", liq: 9e5 }), row({ mint: "A", dex: "pumpswap", pool: "pump", liq: 5e4 }), row({ mint: "B", dex: "raydium" })];
+  const out = screen(rows, { dex: "PumpSwap" });
+  assert.deepEqual(out.map((r) => r.pool), ["pump"]);
+  assert.equal(screen(rows).find((r) => r.mint === "A").pool, "deep");
+});
