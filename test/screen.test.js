@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { fromDexScreener, fromGecko, parseAmount, parseDuration, screen } from "../lib/screen.js";
@@ -71,4 +72,16 @@ test("limit must be a positive integer and defaults only when omitted", () => {
   for (const limit of [-5, 0, NaN, 1.5, Infinity, "3"]) {
     assert.throws(() => screen(rows, { limit }), /limit.*positive integer/i);
   }
+});
+
+
+test("CLI rejects invalid limits before attempting network access", () => {
+  for (const value of ["-5", "0", "abc", "1.5"]) {
+    const result = spawnSync(process.execPath, ["bin/screener.js", "--limit", value], { encoding: "utf8", timeout: 5000 });
+    assert.equal(result.status, 1, `--limit ${value}: ${result.stderr}`);
+    assert.match(result.stderr, /--limit must be a positive integer/i);
+  }
+  const missing = spawnSync(process.execPath, ["bin/screener.js", "--limit"], { encoding: "utf8", timeout: 5000 });
+  assert.equal(missing.status, 1);
+  assert.match(missing.stderr, /--limit must be a positive integer/i);
 });
