@@ -62,3 +62,13 @@ test("--dex keeps a token whose deepest pool is on another DEX, using its pool o
   assert.deepEqual(out.map((r) => r.pool), ["pump"]);
   assert.equal(screen(rows).find((r) => r.mint === "A").pool, "deep");
 });
+
+
+test("limit must be a positive integer and defaults only when omitted", () => {
+  const rows = Array.from({ length: 8 }, (_, i) => row({ mint: String(i), vol24h: i }));
+  assert.equal(screen(rows, { limit: 3 }).length, 3);
+  assert.equal(screen(rows).length, 8);
+  for (const limit of [-5, 0, NaN, 1.5, Infinity, "3"]) {
+    assert.throws(() => screen(rows, { limit }), /limit.*positive integer/i);
+  }
+});
